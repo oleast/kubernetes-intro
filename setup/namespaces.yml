@@ -1,0 +1,7 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: oppgave1
+  labels:
+    name: oppgave1
+---
