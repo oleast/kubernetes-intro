@@ -6,6 +6,8 @@ metadata:
     app: halvor-nginx
 spec:
   replicas: 3
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: halvor-nginx
@@ -16,7 +18,7 @@ spec:
     spec:
       containers:
       - name: halvor-nginx
-        image: nginx
+        image: nginx:1.24.0-alpine
         ports:
         - containerPort: 80
         resources:

@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: halvor-nginx-service
 spec:
+  type: NodePort
   selector:
     app: halvor-nginx
   ports:

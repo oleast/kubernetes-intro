@@ -4,9 +4,8 @@
 Først skal vi installere det vi trenger for å komme igang.
 
 ```bash
-brew install --cask google-cloud-sdk
-gcloud init
-gcloud components install gke-gcloud-auth-plugin kubectl
+brew install kubectl
+aws eks update-kubeconfig --name skyskolen-k8s --region eu-west-1
 ```
 
 
@@ -95,7 +94,7 @@ La oss ta en titt på hva vi egentlig har kjørt opp med dette statiske nginx-im
 La oss se om denne nettsiden gir oss noe. Vi kan bruke `kubectl port-forward <podnavn> 8080:80` for å videresende port 80 på poden til port 8080 på maskinen vår. Da kan vi åpne http://localhost:8080 i nettleseren og se om vi får noe.
 
 ## Services
-Kubernetes services er en måte å eksponere pods på. Det er mange teknikker for hvordan vi jobber med services og gjør networking innad i clusteret, her bruker vi ClusterIPs. Det er en måte å definere en statisk IP-adresse som kan nås fra andre pods eller fra utsiden av Kubernetes-clusteret. La oss se på en enkel definisjon av en service og bygge videre på det.
+Kubernetes services er en måte å eksponere pods på. Det er mange teknikker for hvordan vi jobber med services og gjør networking innad i clusteret, her bruker vi ClusterIPs. Det er en måte å definere en statisk IP-adresse som kan nås fra andre pods eller fra utsiden av Kubernetes-clusteret. La oss se på en enkel definisjon av en service og bygge videre på det etterpå
 
 - Lag en fil `service.yaml` i arbeidsmappa di. Fyll inn port og selector-feltet, hent inspirasjon fra deploymenten og dokumentasjonen:
 - API reference for `service`: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#service-v1-core. 
@@ -125,4 +124,4 @@ Sånn! Nå veit du forventet output!
 
 For å kjøre dette fra inne i clusteret kan vi starte en kortlevd pod med det vi trenger og stoppe den etterpå. 
 
-`kubectl run -i --tty --rm debug --image=curlimages/curl --restart=Never -- http://10.104.128.227` (bytt ut IPen med din egen).
+Hva gjør vi under her? Prøv å tenk tilbake på tidligere workshops og eventuell google for å forstå hva kommandoen er før du kjører den. `kubectl run -i --tty --rm debug --image=curlimages/curl --restart=Never -- http://10.104.128.227` (bytt ut IPen med din egen).
