@@ -1,2 +1,3 @@
-/arbeidsmappa
+arbeidsmappa/*
+!arbeidsmappa/.gitkeep
 /.vscode
