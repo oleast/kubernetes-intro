@@ -6,7 +6,7 @@ Først skal vi installere det vi trenger for å komme igang.
 
 ```bash
 brew install kubectl
-aws eks update-kubeconfig --name oppdrift --region eu-west-1
+aws eks update-kubeconfig --name Oppdrift --region eu-west-1
 ```
 
 ## Pods, Deployments, Services og manifester
