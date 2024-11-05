@@ -2,21 +2,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: halvor-nginx-ingress
-  annotations:     
+  name: ole-anders-nginx-ingress
+  annotations:
     alb.ingress.kubernetes.io/load-balancer-name: ingress
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
   ingressClassName: alb
   rules:
-    - host: halvor-nginx.bekk.cloud
+    - host: ole-anders-nginx.oppdrift.cloud
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: halvor-nginx-service
+                name: ole-anders-nginx-service
                 port:
                   number: 30367

@@ -30,7 +30,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: <navn>-nginx.bekk.cloud
+    - host: <navn>-nginx.oppdrift.cloud
       http:
         paths:
           - path: /
@@ -43,7 +43,7 @@ spec:
 ```
 
 - Apply og describe. Gå hit og finn LoadBalanceren (LB-en) din: https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#LoadBalancers:.
-- Gå til Route 53 og sett opp en A alias record mot LB-en din. Kall den det samme (altså <navn>-nginx.bekk.cloud).
+- Gå til Route 53 og sett opp en A alias record mot LB-en din. Kall den det samme (altså <navn>-nginx.oppdrift.cloud).
 - Sjekk om det funker! Gi den et lite minutt på å progagere DNS.
 
 ## Bygge ut deploymenten

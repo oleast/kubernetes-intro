@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: halvor-mypod
+  name: ole-anders-mypod
   labels:
-    name: halvor-mypod
+    name: ole-anders-mypod
 spec:
   containers:
-  - name: halvor-mypod
-    image: nginx
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "100m"
-      limits:
-        memory: "128Mi"
-        cpu: "100m"
+    - name: ole-anders-mypod
+      image: nginx
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "100m"
+        limits:
+          memory: "128Mi"
+          cpu: "100m"
