@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: ole-anders-nginx.oppdrift.cloud
+    - host: ole-anders-nginx.google.oppdrift.cloud
       http:
         paths:
           - path: /

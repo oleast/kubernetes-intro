@@ -6,7 +6,7 @@ Først skal vi installere det vi trenger for å komme igang.
 
 ```bash
 brew install kubectl
-aws eks update-kubeconfig --name Oppdrift --region eu-west-1
+gcloud container clusters get-credentials oppdrift-cluster --region europe-central2 --project bekk-oppdrift
 ```
 
 ## Pods, Deployments, Services og manifester
