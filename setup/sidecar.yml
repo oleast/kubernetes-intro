@@ -39,7 +39,7 @@ spec:
       args:
         - /bin/sh
         - -c
-        - tail -fn+1 /var/log/myapp.log
+        - tail -f /var/log/myapp.log
       volumeMounts:
         - name: log
           mountPath: /var/log

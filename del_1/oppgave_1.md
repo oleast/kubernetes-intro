@@ -43,15 +43,15 @@ spec:
 
 - kjør `kubectl apply -f pod.yaml` for å lage pod-en.
 - Sjekk status på pod-en din med `kubectl get pods`.
-- For å se litt ekstra detaljer om denne kan du kjøre `kubectl describe pod mypod`.
-- For å slette pod-en kan du kjøre `kubectl delete pod mypod`.
+- For å se litt ekstra detaljer om denne kan du kjøre `kubectl describe pod <DITT-NAVN>-mypod`.
+- For å slette pod-en kan du kjøre `kubectl delete pod <DITT-NAVN>-mypod`.
 - Prøv å fjerne `resources`-delen av pod-en, re-apply den og se hva som skjer. Du kan bruke `describe`-kommandoen for å se litt ekstra detaljer.
 
 ## Deployments
 
 Neste er Deployments, dette er en måte å definere en ønsket tilstand av pods. La oss se på en enkel definisjon av en deployment og bygge videre på det.
 
-_Notat: Ser du noen skrive om ReplicaSets, så er faset ut av Kubernetes, og erstattet med Deployments._
+_Notat: Du kan se referanser til ReplicaSets. Disse brukes av Deployments under panseret, men du oppretter dem aldri direkte — bruk alltid Deployments._
 
 - Lag en fil `deployment.yaml` i arbeidsmappen din. Lim inn innholdet under.
 
@@ -59,18 +59,18 @@ _Notat: Ser du noen skrive om ReplicaSets, så er faset ut av Kubernetes, og ers
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: <DITT-NAVN>-nginx-deployment
   labels:
     app: <DITT-NAVN>-nginx
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: <DITT-NAVN>-nginx
   template:
     metadata:
       labels:
-        app: nginx
+        app: <DITT-NAVN>-nginx
     spec:
       containers:
         - name: <DITT-NAVN>-nginx
@@ -86,12 +86,16 @@ spec:
               cpu: "150m"
 ```
 
+_Merk: Fordi alle jobber i samme cluster og namespace, må labels som `app: <DITT-NAVN>-nginx` være unike — ellers vil Deployments plukke opp hverandres pods!_
+
 - Kjør `kubectl apply -f deployment.yaml` for å lage deploymenten.
 
 - Sjekk status på deploymenten din med `kubectl get deployments`.
 - Kjør en `kubectl get pods` for å se at det er tre pods som er opprettet.
 - Prøv å slette en av de med `kubectl delete pod <pod-navn>`. Hva skjer med pod-en og deploymenten?
-- Prøv å slette deploymenten med `kubectl delete deployment nginx-deployment`. Hva skjer med pod-ene?
+- Prøv å slette deploymenten med `kubectl delete deployment <DITT-NAVN>-nginx-deployment`. Hva skjer med pod-ene?
+
+_Tips: Etter du har sett at pod-ene forsvinner, kjør `kubectl apply -f deployment.yaml` igjen slik at deploymenten er oppe før du fortsetter til neste seksjon._
 
 ## Sjekke outputen fra pod-ene
 
@@ -103,9 +107,11 @@ La oss se om denne nettsiden gir oss noe. Vi kan bruke `kubectl port-forward <po
 
 ## Services
 
-Kubernetes services er en måte å definere pods som en tjeneste på. På den måten kan en pod koble til en annen pod uten at den trenger å vite noe annet enn tjenestenavnet dens! Det er mange teknikker for hvordan vi jobber med services og gjør networking innad i clusteret, her bruker vi ClusterIPs. Det er en måte å definere en statisk IP-adresse som kan nås fra andre pods eller fra utsiden av Kubernetes-clusteret. La oss se på en enkel definisjon av en service og bygge videre på det etterpå.
+Kubernetes services er en måte å definere pods som en tjeneste på. På den måten kan en pod koble til en annen pod uten at den trenger å vite noe annet enn tjenestenavnet dens! Det er mange teknikker for hvordan vi jobber med services og gjør networking innad i clusteret, her bruker vi ClusterIPs. ClusterIP gir servicen en stabil, intern IP-adresse som andre pods i clusteret kan nå. Den er IKKE tilgjengelig utenfra — det er nettopp det vi løser med NodePort og Gateway i del 2. La oss se på en enkel definisjon av en service og bygge videre på det etterpå.
 
-- Lag en fil `service.yaml` i arbeidsmappen din. Fyll inn port og selector-feltet, hent inspirasjon fra deploymenten og dokumentasjonen:
+- Lag en fil `service.yaml` i arbeidsmappen din. Fyll inn navn, port og selector-feltet, hent inspirasjon fra deploymenten og dokumentasjonen:
+
+_Hint: Bruk navnekonvensjonen `<DITT-NAVN>-nginx-service` — dette navnet brukes senere for å rute trafikk til servicen din._
 - API reference for `service`: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#service-v1-core.
   API reference for selector:
 
@@ -133,4 +139,4 @@ Sånn! Nå vet du forventet output!
 
 For å kjøre dette fra inne i clusteret kan vi starte en kortlevd pod med det vi trenger, og stoppe den etterpå.
 
-Hva gjør vi under her? Prøv å tenk tilbake på tidligere workshops og eventuell google for å forstå hva kommandoen er før du kjører den. `kubectl run -i --tty --rm debug --image=curlimages/curl --restart=Never -- http://10.104.128.227` (bytt ut IP-en med den fra pod-en din).
+Hva gjør vi under her? Prøv å tenk tilbake på tidligere workshops og eventuell google for å forstå hva kommandoen er før du kjører den. `kubectl run -i --tty --rm debug --image=curlimages/curl --restart=Never -- http://10.104.128.227` (bytt ut IP-en med den du fant via `kubectl get service`).

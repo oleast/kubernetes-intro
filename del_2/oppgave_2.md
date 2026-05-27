@@ -21,14 +21,14 @@ Fyll ut det under.
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: <NAVN>-nginx-gateway
+  name: <DITT-NAVN>-nginx-gateway
 spec:
   gatewayClassName: gke-l7-gxlb
   listeners:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "<NAVN>-nginx.google.oppdrift.cloud"
+      hostname: "<DITT-NAVN>-nginx.google.oppdrift.cloud"
       allowedRoutes:
         namespaces:
           from: Same
@@ -37,26 +37,26 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: <NAVN>-nginx-httproute
+  name: <DITT-NAVN>-nginx-httproute
 spec:
   parentRefs:
-    - name: <NAVN>-nginx-gateway
+    - name: <DITT-NAVN>-nginx-gateway
       sectionName: http
   hostnames:
-    - "<NAVN>-nginx.google.oppdrift.cloud"
+    - "<DITT-NAVN>-nginx.google.oppdrift.cloud"
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: "/"
       backendRefs:
-        - name: <NAVN>-nginx-service
-          port: <PORTEN FRA SERVICEN>
+        - name: <DITT-NAVN>-nginx-service
+          port: <SERVICE-PORTEN (port, ikke nodePort)>
 ```
 
 - Apply og describe. Gå hit og finn LoadBalanceren (LB-en) din: https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=bekk-oppdrift:
 (Huske å bytte bruker oppe i høyre hjørne om den viser at du ikke har tilgang)
-- Gå til Cloud DNS og sett opp en A alias record mot LB-en din. Kall den det samme (altså <navn>-nginx.google.oppdrift.cloud). Gå til CloudDNS -> oppdrift -> "Add standard". Legg inn domenet i DNS-name, og IP-adressen.
+- Gå til Cloud DNS og sett opp en A alias record mot LB-en din. Kall den det samme (altså <DITT-NAVN>-nginx.google.oppdrift.cloud). Gå til CloudDNS -> oppdrift -> "Add standard". Legg inn domenet i DNS-name, og IP-adressen.
 - Sjekk om det funker! Gi den et lite minutt på å progagere DNS.
 
 ## Bygge ut deploymenten
@@ -79,7 +79,7 @@ La oss lage og sette opp et eksempel. Før du gjør en apply på denne, les gjen
 apiVersion: v1
 kind: Pod
 metadata:
-  name: <FYLL-MEG-UT>-sidecar-example
+  name: <DITT-NAVN>-sidecar-example
 spec:
   volumes:
     - name: log
@@ -122,3 +122,14 @@ spec:
         - name: log
           mountPath: /var/log
 ```
+
+## Oppsummering
+
+I denne oppgaven har vi vært gjennom:
+
+- Pods og manifester
+- Deployments for ønsket tilstand og self-healing
+- Services (ClusterIP → NodePort)
+- Gateway for ekstern trafikk med DNS
+- Deployment-strategier (RollingUpdate vs Recreate)
+- Sidecar-patternet
